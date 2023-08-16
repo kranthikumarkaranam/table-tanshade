@@ -15,7 +15,18 @@ export function downloadToExcel() {
 					label: 'DOB',
 					value: (row) => {
 						if (typeof row.dob === 'string') {
-							return new Date(row.dob).toLocaleDateString();
+							const formatDate = (dateString: string) => {
+								const options = {
+									day: 'numeric',
+									month: 'short',
+									year: 'numeric',
+								};
+								return new Intl.DateTimeFormat('en-US', options as any).format(
+									new Date(dateString as string)
+								);
+							};
+							const formattedDOB = formatDate(row.dob as string);
+							return formattedDOB;
 						} else {
 							return '';
 						}
