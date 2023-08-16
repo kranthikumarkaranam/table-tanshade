@@ -36,6 +36,8 @@ import { Input } from '@/components/ui/input';
 import { ChevronDown } from 'lucide-react';
 import ThemeToggle from '@/components/theme-toggle';
 import { downloadToExcel } from '@/lib/xlsx';
+import { DataTablePagination } from '../components/pagination';
+import { DataTableViewOptions } from '../components/column-toggle';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -76,8 +78,7 @@ export default function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div>
-			{/* input */}
+		<>
 			<div className='flex items-center justify-between'>
 				<div className='flex items-center justify-start py-4 space-x-4'>
 					<Input
@@ -99,36 +100,7 @@ export default function DataTable<TData, TValue>({
 						className='max-w-sm'
 					/>
 
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button
-								variant='outline'
-								className='ml-auto'
-							>
-								Columns
-								<ChevronDown className='ml-2 h-4 w-4' />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align='end'>
-							{table
-								.getAllColumns()
-								.filter((column) => column.getCanHide())
-								.map((column) => {
-									return (
-										<DropdownMenuCheckboxItem
-											key={column.id}
-											className='capitalize'
-											checked={column.getIsVisible()}
-											onCheckedChange={(value) =>
-												column.toggleVisibility(!!value)
-											}
-										>
-											{column.id}
-										</DropdownMenuCheckboxItem>
-									);
-								})}
-						</DropdownMenuContent>
-					</DropdownMenu>
+					<DataTableViewOptions table={table} />
 				</div>
 
 				<div className='flex items-center justify-end py-4 space-x-4'>
@@ -136,14 +108,13 @@ export default function DataTable<TData, TValue>({
 
 					<Button
 						onClick={() => downloadToExcel()}
-						className='ml-4'
+						className='ml-4 px-5'
 					>
 						Export
 					</Button>
 				</div>
 			</div>
 
-			{/* table */}
 			<div className='rounded-md border'>
 				<Table>
 					<TableHeader>
@@ -195,32 +166,7 @@ export default function DataTable<TData, TValue>({
 				</Table>
 			</div>
 
-			<div className='flex items-center'>
-				{/* Number of selected */}
-				<div className='flex-1 text-sm text-muted-foreground'>
-					{table.getFilteredSelectedRowModel().rows.length} of{' '}
-					{table.getFilteredRowModel().rows.length} row(s) selected
-				</div>
-				{/* pagination */}
-				<div className='flex items-center justify-end space-x-2 py-4'>
-					<Button
-						variant='outline'
-						size='sm'
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
-					>
-						Prev
-					</Button>
-					<Button
-						variant='outline'
-						size='sm'
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
-					>
-						Next
-					</Button>
-				</div>
-			</div>
-		</div>
+			<DataTablePagination table={table} />
+		</>
 	);
 }

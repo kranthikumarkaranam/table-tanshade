@@ -14,7 +14,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
-import { DataTableColumnHeader } from './column-header';
+import { DataTableColumnHeader } from '../components/column-header';
 
 export const columns: ColumnDef<Users>[] = [
 	{
@@ -112,8 +112,14 @@ export const columns: ColumnDef<Users>[] = [
 		),
 		cell: ({ row }) => {
 			const dob = row.getValue('dob');
-			const formatted = new Date(dob as string).toLocaleDateString();
-			return <div className='text-center'>{formatted}</div>;
+			const formatDate = (dateString: string) => {
+				const options = { day: 'numeric', month: 'short', year: 'numeric' };
+				return new Intl.DateTimeFormat('en-US', options as any).format(
+					new Date(dateString as string)
+				);
+			};
+			const formattedDOB = formatDate(dob as string);
+			return <div className='text-center'>{formattedDOB}</div>;
 		},
 	},
 	{
@@ -163,10 +169,19 @@ export const columns: ColumnDef<Users>[] = [
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={() => {
-								const dob = new Date(users.dob);
-								const formattedDOB = `${dob.getDate()}/${
-									dob.getMonth() + 1
-								}/${dob.getFullYear()}`;
+								const dob = row.getValue('dob');
+								const formatDate = (dateString: string) => {
+									const options = {
+										day: 'numeric',
+										month: 'short',
+										year: 'numeric',
+									};
+									return new Intl.DateTimeFormat(
+										'en-US',
+										options as any
+									).format(new Date(dateString as string));
+								};
+								const formattedDOB = formatDate(dob as string);
 								const fullName = `${users.first_name} ${users.last_name}`;
 								const email = users.email.toString();
 								const gender = users.gender.toString();

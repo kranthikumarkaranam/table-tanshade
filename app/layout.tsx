@@ -24,7 +24,7 @@ export default function RootLayout({
 					defaultTheme='system'
 					enableSystem
 				>
-					{children}
+					<div className='container py-10 mx-auto'>{children}</div>
 				</ThemeProvider>
 			</body>
 		</html>
