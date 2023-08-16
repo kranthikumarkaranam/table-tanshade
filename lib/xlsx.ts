@@ -13,7 +13,13 @@ export function downloadToExcel() {
 				{ label: 'Gender', value: 'gender' },
 				{
 					label: 'DOB',
-					value: (row) => new Date(row.dob).toLocaleDateString(),
+					value: (row) => {
+						if (typeof row.dob === 'string') {
+							return new Date(row.dob).toLocaleDateString();
+						} else {
+							return '';
+						}
+					},
 				},
 			],
 			content: users,
