@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { ChevronsUpDown, MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Users } from '@/utils/users';
@@ -14,6 +14,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
+import { DataTableColumnHeader } from './column-header';
 
 export const columns: ColumnDef<Users>[] = [
 	{
@@ -27,7 +28,6 @@ export const columns: ColumnDef<Users>[] = [
 				/>
 			</div>
 		),
-
 		cell: ({ row }) => (
 			<div className='text-center'>
 				<Checkbox
@@ -39,100 +39,77 @@ export const columns: ColumnDef<Users>[] = [
 				/>
 			</div>
 		),
-
 		enableSorting: false,
 		enableHiding: false,
 	},
 	{
 		accessorKey: 'id',
-		header: () => {
-			return <div className='text-center'>ID</div>;
-		},
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='ID'
+			/>
+		),
 		cell: ({ row }) => {
 			return <div className='text-center'>{row.getValue('id')}</div>;
 		},
 	},
 	{
 		accessorKey: 'first_name',
-		header: ({ column }) => {
-			return (
-				<div className='text-center'>
-					<Button
-						variant='ghost'
-						onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-					>
-						First Name
-						<ChevronsUpDown className='ml-2 h-4 w-4' />
-					</Button>
-				</div>
-			);
-		},
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='First Name'
+			/>
+		),
 		cell: ({ row }) => {
 			return <div className='text-center'>{row.getValue('first_name')}</div>;
 		},
 	},
 	{
-		header: ({ column }) => {
-			return (
-				<div className='text-center'>
-					<Button
-						variant='ghost'
-						onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-					>
-						Last Name
-						<ChevronsUpDown className='ml-2 h-4 w-4' />
-					</Button>
-				</div>
-			);
-		},
 		accessorKey: 'last_name',
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Last Name'
+			/>
+		),
 		cell: ({ row }) => {
 			return <div className='text-center'>{row.getValue('last_name')}</div>;
 		},
 	},
 	{
 		accessorKey: 'email',
-		header: ({ column }) => {
-			return (
-				<div className='text-center'>
-					<Button
-						variant='ghost'
-						onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-					>
-						Email
-						<ChevronsUpDown className='ml-2 h-4 w-4' />
-					</Button>
-				</div>
-			);
-		},
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Email'
+			/>
+		),
 		cell: ({ row }) => {
 			return <div className='text-center'>{row.getValue('email')}</div>;
 		},
 	},
 	{
 		accessorKey: 'gender',
-		header: () => {
-			return <div className='text-center'>Gender</div>;
-		},
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Gender'
+			/>
+		),
 		cell: ({ row }) => {
 			return <div className='text-center'>{row.getValue('gender')}</div>;
 		},
 	},
 	{
-		header: ({ column }) => {
-			return (
-				<div className='text-center'>
-					<Button
-						variant='ghost'
-						onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-					>
-						DOB
-						<ChevronsUpDown className='ml-2 h-4 w-4' />
-					</Button>
-				</div>
-			);
-		},
 		accessorKey: 'dob',
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='DOB'
+			/>
+		),
 		cell: ({ row }) => {
 			const dob = row.getValue('dob');
 			const formatted = new Date(dob as string).toLocaleDateString();
@@ -156,15 +133,15 @@ export const columns: ColumnDef<Users>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
+						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={() => {
 								const fullName = `${users.first_name} ${users.last_name}`;
 								navigator.clipboard.writeText(fullName.toString());
 							}}
 						>
-							Copy FullName
+							Copy Full Name
 						</DropdownMenuItem>
-						{/* <DropdownMenuSeparator /> */}
 						<DropdownMenuItem
 							onClick={() => {
 								navigator.clipboard.writeText(users.email.toString());
@@ -172,7 +149,6 @@ export const columns: ColumnDef<Users>[] = [
 						>
 							Copy Email
 						</DropdownMenuItem>
-						{/* <DropdownMenuSeparator /> */}
 						<DropdownMenuItem
 							onClick={() => {
 								const dob = new Date(users.dob);
@@ -183,6 +159,22 @@ export const columns: ColumnDef<Users>[] = [
 							}}
 						>
 							Copy DOB
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							onClick={() => {
+								const dob = new Date(users.dob);
+								const formattedDOB = `${dob.getDate()}/${
+									dob.getMonth() + 1
+								}/${dob.getFullYear()}`;
+								const fullName = `${users.first_name} ${users.last_name}`;
+								const email = users.email.toString();
+								const gender = users.gender.toString();
+								const user = `Name: ${fullName}\nEmail: ${email}\nGender: ${gender}\nDOB: ${formattedDOB}`;
+								navigator.clipboard.writeText(user);
+							}}
+						>
+							Copy User
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
