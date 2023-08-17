@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
 	DropdownMenu,
@@ -20,10 +20,6 @@ export function UserNav() {
 					className='relative h-8 w-8 rounded-full'
 				>
 					<Avatar className='h-9 w-9'>
-						<AvatarImage
-							src='/avatars/03.png'
-							alt='@kranthi'
-						/>
 						<AvatarFallback>KK</AvatarFallback>
 					</Avatar>
 				</Button>

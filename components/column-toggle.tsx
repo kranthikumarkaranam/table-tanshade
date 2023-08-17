@@ -26,9 +26,9 @@ export function DataTableViewOptions<TData>({
 
 	const formatFieldName = (fieldName: string) => {
 		if (fieldName === 'id') {
-			return 'ID'; // Change 'id' to 'ID'
+			return 'ID';
 		} else if (fieldName === 'dob') {
-			return 'DOB'; // Change 'dob' to 'DOB'
+			return 'DOB';
 		}
 		const words = fieldName.split('_');
 		const formattedWords = words.map((word) => capitalizeFirstLetter(word));
