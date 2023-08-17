@@ -32,7 +32,7 @@ export function DataTableColumnHeader<TData, TValue>({
 	}
 
 	return (
-		<div className={cn('flex items-center ml-5 justify-center ', className)}>
+		<div className={cn('flex items-center justify-start -ml-4', className)}>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button

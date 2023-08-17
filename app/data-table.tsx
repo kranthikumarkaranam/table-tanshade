@@ -78,7 +78,7 @@ export default function DataTable<TData, TValue>({
 	});
 
 	return (
-		<>
+		<div>
 			<div className='flex items-center justify-between'>
 				<div className='flex items-center justify-start py-4 space-x-4'>
 					<Input
@@ -167,6 +167,6 @@ export default function DataTable<TData, TValue>({
 			</div>
 
 			<DataTablePagination table={table} />
-		</>
+		</div>
 	);
 }

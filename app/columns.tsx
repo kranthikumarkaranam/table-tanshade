@@ -20,24 +20,22 @@ export const columns: ColumnDef<Users>[] = [
 	{
 		id: 'select',
 		header: ({ table }) => (
-			<div className='text-center'>
-				<Checkbox
-					checked={table.getIsAllPageRowsSelected()}
-					onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-					aria-label='Select all'
-				/>
-			</div>
+			<Checkbox
+				checked={table.getIsAllPageRowsSelected()}
+				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+				aria-label='Select all'
+				className='translate-y-[2px]'
+			/>
 		),
 		cell: ({ row }) => (
-			<div className='text-center'>
-				<Checkbox
-					checked={row.getIsSelected()}
-					onCheckedChange={(value) => {
-						row.toggleSelected(!!value);
-					}}
-					aria-label='Select row'
-				/>
-			</div>
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => {
+					row.toggleSelected(!!value);
+				}}
+				aria-label='Select row'
+				className='translate-y-[2px]'
+			/>
 		),
 		enableSorting: false,
 		enableHiding: false,
@@ -50,9 +48,7 @@ export const columns: ColumnDef<Users>[] = [
 				title='ID'
 			/>
 		),
-		cell: ({ row }) => {
-			return <div className='text-center'>{row.getValue('id')}</div>;
-		},
+		cell: ({ row }) => row.getValue('id'),
 	},
 	{
 		accessorKey: 'first_name',
@@ -62,9 +58,7 @@ export const columns: ColumnDef<Users>[] = [
 				title='First Name'
 			/>
 		),
-		cell: ({ row }) => {
-			return <div className='text-center'>{row.getValue('first_name')}</div>;
-		},
+		cell: ({ row }) => row.getValue('first_name'),
 	},
 	{
 		accessorKey: 'last_name',
@@ -74,9 +68,7 @@ export const columns: ColumnDef<Users>[] = [
 				title='Last Name'
 			/>
 		),
-		cell: ({ row }) => {
-			return <div className='text-center'>{row.getValue('last_name')}</div>;
-		},
+		cell: ({ row }) => row.getValue('last_name'),
 	},
 	{
 		accessorKey: 'email',
@@ -86,9 +78,7 @@ export const columns: ColumnDef<Users>[] = [
 				title='Email'
 			/>
 		),
-		cell: ({ row }) => {
-			return <div className='text-center'>{row.getValue('email')}</div>;
-		},
+		cell: ({ row }) => row.getValue('email'),
 	},
 	{
 		accessorKey: 'gender',
@@ -98,9 +88,7 @@ export const columns: ColumnDef<Users>[] = [
 				title='Gender'
 			/>
 		),
-		cell: ({ row }) => {
-			return <div className='text-center'>{row.getValue('gender')}</div>;
-		},
+		cell: ({ row }) => row.getValue('gender'),
 	},
 	{
 		accessorKey: 'dob',
@@ -119,7 +107,7 @@ export const columns: ColumnDef<Users>[] = [
 				);
 			};
 			const formattedDOB = formatDate(dob as string);
-			return <div className='text-center'>{formattedDOB}</div>;
+			return formattedDOB;
 		},
 	},
 	{
@@ -157,10 +145,19 @@ export const columns: ColumnDef<Users>[] = [
 						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={() => {
-								const dob = new Date(users.dob);
-								const formattedDOB = `${dob.getDate()}/${
-									dob.getMonth() + 1
-								}/${dob.getFullYear()}`;
+								const dob = row.getValue('dob');
+								const formatDate = (dateString: string) => {
+									const options = {
+										day: 'numeric',
+										month: 'short',
+										year: 'numeric',
+									};
+									return new Intl.DateTimeFormat(
+										'en-US',
+										options as any
+									).format(new Date(dateString as string));
+								};
+								const formattedDOB = formatDate(dob as string);
 								navigator.clipboard.writeText(formattedDOB);
 							}}
 						>
